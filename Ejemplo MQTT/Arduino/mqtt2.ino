@@ -1,7 +1,10 @@
 // Modificar su SSID y PASSWORD de su red antes de compilar y grabar al ESP32
 
-#include <WiFi.h>
-#include <PubSubClient.h>
+#if defined(ESP32)
+  #include <WiFi.h>
+#elif defined(ARDUINO_UNOWIFIR4)
+  #include <WiFiS3.h>
+#endif
 
 const char* ssid = "NOMBRE_DE_SU_RED";                    // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
 const char* password = "CLAVE_DE_SU_RED";                 // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
