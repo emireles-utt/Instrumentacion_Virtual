@@ -1,1 +1,1 @@
-
+https://www.pythonguis.com/tutorials/pyside6-embed-pyqtgraph-custom-widgets/
