@@ -17,8 +17,8 @@
 #define BTN_CHANNEL   2
 #define LED_CHANNEL   3
 
-const char* ssid = "SU_NOMBRE_DE_SU_RED";                   // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
-const char* password = "SU_PASSWORD_DE_SU_RED";             // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
+const char* ssid = "EL_NOMBRE_DE_SU_RED";                   // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
+const char* password = "EL_PASSWORD_DE_SU_RED";             // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
 
 const char* mqtt_server = "test.mosquitto.org";             // servidor MQTT en la nube
 //const char* mqtt_server = "192.168.0.102";                  // servidor MQTT local
