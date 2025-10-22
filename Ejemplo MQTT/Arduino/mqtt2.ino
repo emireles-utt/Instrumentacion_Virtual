@@ -7,21 +7,10 @@
 #endif
 #include <PubSubClient.h>
 
-// asignacion de pines ESP32-S3
-//#define ADC_CHANNEL   1
-//#define BTN_CHANNEL   14
-//#define LED_CHANNEL   20
+const char* ssid = "InstVirtual";                    // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
+const char* password = "37418601";                          // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
 
-// asignacion de pines ESP32-C3
-#define ADC_CHANNEL   0
-#define BTN_CHANNEL   2
-#define LED_CHANNEL   3
-
-const char* ssid = "EL_NOMBRE_DE_SU_RED";                   // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
-const char* password = "EL_PASSWORD_DE_SU_RED";             // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
-
-const char* mqtt_server = "test.mosquitto.org";             // servidor MQTT en la nube
-//const char* mqtt_server = "192.168.0.102";                  // servidor MQTT local
+const char* mqtt_server = "192.168.0.102";             // servidor MQTT
 
 long lastMsg = 0;
 int conta = 0;
@@ -34,8 +23,8 @@ PubSubClient client(espClient);                         // creamos un objeto de 
 
 void setup(){
   Serial.begin(115200);                                 // iniciamos la UART a 115200
-  pinMode(BTN_CHANNEL, INPUT);                                   // GPIO17 como entrada
-  pinMode(LED_CHANNEL, OUTPUT);                                  // GPIO26 como salida
+  pinMode(17, INPUT);                                   // GPIO17 como entrada
+  pinMode(26, OUTPUT);                                  // GPIO26 como salida
   setup_wifi();                                         // iniciamos la conexion a la red WiFi
   client.setServer(mqtt_server, 1883);                  // conectamos el ESP32 al serviro MQTT por el puerto 1883
   client.setCallback(callback);                         // creamos una funcion callback para recibir los datos del servidor
@@ -66,11 +55,11 @@ void callback(char* topic, byte* message, unsigned int length){
     msgTemp += (char)message[i];
   }
 
-  if(String(topic) == "utt/esp32/led"){                     // comprobamos el topico que nos interesa
+  if(String(topic) == "esp32/led"){                     // comprobamos el topico que nos interesa
     if(msgTemp == "ON")                                 // comprobamos el mensaje (payload) si es "ON"
-      digitalWrite(LED_CHANNEL, HIGH);                           // y encedemos el led conectador a la patita 22
+      digitalWrite(26, HIGH);                           // y encedemos el led conectador a la patita 22
     else if(msgTemp == "OFF")                           // si el mensaje que llego es "OFF"
-      digitalWrite(LED_CHANNEL, LOW);                            // apagamos el led en la patita 22
+      digitalWrite(26, LOW);                            // apagamos el led en la patita 22
   }
 }
 
@@ -80,7 +69,7 @@ void reconnect(){
     Serial.print("\nReconectando servidor MQTT...");   
     if(client.connect("ESP32_2")){                        // si el cliente ya se conecto al servidor
       Serial.println("conectado");
-      client.subscribe("utt/esp32/led");                    // no suscribimos al topico que desamos (esto no es obligatorio si solo se va a publicar)
+      client.subscribe("esp32/led");                    // no suscribimos al topico que desamos (esto no es obligatorio si solo se va a publicar)
     }else{
       Serial.print("Fallo, rc = ");                     // si hay alguna falla en la conexion
       Serial.print(client.state());                     // desplegamos el error de conexion
@@ -98,15 +87,16 @@ void loop(){
   long varNow = millis();
   if(varNow - lastMsg > 500){                           // esperamos 500 milisegundos
     lastMsg = varNow;
-    valPot = analogRead(ADC_CHANNEL);                            // leemos el canal analogico 34
+    valPot = analogRead(34);                            // leemos el canal analogico 34
     sprintf(msg,"%d", valPot);
-    client.publish("utt/esp32/adc", msg);                   // publicamos el valor del ADC al topico deseado
+    client.publish("esp32/adc", msg);                   // publicamos el valor del ADC al topico deseado
     //Serial.println(valPot);
-    if(digitalRead(BTN_CHANNEL) == 1){                           // verificamos el estado de la entrada 17
-      client.publish("utt/esp32/boton", "1");               // publicamos un "0" si se presiono el boton
+    if(digitalRead(17) == 1){                           // verificamos el estado de la entrada 17
+      client.publish("esp32/boton", "1");               // publicamos un "0" si se presiono el boton
     }else{
-      client.publish("utt/esp32/boton", "0");               // o publicamos un "1" si el boton no esta presionado
+      client.publish("esp32/boton", "0");               // o publicamos un "1" si el boton no esta presionado
     }
   }
   client.loop();                                        // si el cliente ya esta conectador verificamos los mensajes entrantes constantemente y mantenemos la conexion con el servidor
 }
+
