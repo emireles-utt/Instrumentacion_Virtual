@@ -7,8 +7,8 @@
 #endif
 #include <PubSubClient.h>
 
-const char* ssid = "InstVirtual";                      // NOTA: cambiar este parametro antes de grabar el programa en el ESP32 
-const char* password = "37418601";                     // NOTA: cambiar este parametro antes de grabar el programa en el ESP32
+const char* ssid = "InstVirtual";                      // NOTA: este nombre de red es solo en UTT en su casa cambiar por el nombre de su red.
+const char* password = "37418601";                     // NOTA: esta es la contraseña de la red en UTT en su casa cambiar por la contraseña de su red.
 
 const char* mqtt_server = "192.168.0.102";             // servidor MQTT local (en UTT)
 //const char* mqtt_server = "test.mosquitto.org";        // servidor MQTT en la nube (en su casa)
@@ -100,5 +100,6 @@ void loop(){
   }
   client.loop();                                        // si el cliente ya esta conectador verificamos los mensajes entrantes constantemente y mantenemos la conexion con el servidor
 }
+
 
 
