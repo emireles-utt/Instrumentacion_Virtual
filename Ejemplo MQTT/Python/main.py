@@ -39,7 +39,8 @@ class MiVentan(QMainWindow, Ui_MainWindow):
             self.client.publish("esp32/led", "OFF")
 
     def conectar(self):
-        self.client.connect(host="test.mosquitto.org", port=1883, keepalive=60)
+        #self.client.connect(host="test.mosquitto.org", port=1883, keepalive=60)    # broker en la nube usar cuando esten en su casa
+        self.client.connect(host="192.168.0.102", port=1883, keepalive=60)         # broker local usar cuando esten en UTT
         self.client.loop_start()
 
     def salir(self):
@@ -55,4 +56,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     venta = MiVentan()
     venta.show()
+
     sys.exit(app.exec())
